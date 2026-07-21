@@ -209,3 +209,63 @@ export async function refreshToken(req, res) {
     accessToken,
   });
 }
+
+//This is the end-point for showing the details of the user in response , which requested/registered in the server
+export async function getUser(req, res) {
+  //This tell where the accesstoken is stored in the browser/frontend ; currently using postman so we have to define header/authorization under which a token is stored there
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Token not found My friend!",
+    });
+  }
+  //jwt.verify is used to decode the token to extract user details by considering token and jwt.secret
+  //This can be done by decoding the token which has _id stored from the database , so it will fetch the details and show who registered.
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return res.status(401).json({
+      message: "Invalid Token!!!",
+    });
+  }
+  const user = await userModel.findById(decoded.id);
+
+  res.status(200).json({
+    message: "User Fetched Successfully! ",
+    user: {
+        id:user._id,
+      username: user.username,
+      email: user.email,
+    },
+  });
+}
+
+//Cleared the refreshToken stored in cookies and set session ->revoked:true
+export async function logout(req, res) {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    return res.status(400).json({
+      message: "Refresh Token not found!",
+    });
+  }
+  const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex");
+
+  const session = await sessionModel.findOne({
+    refreshTokenHash,
+    revoked: false,
+  });
+
+  if (!session) {
+    return res.status(400).json({
+      message: "Invalid Refresh Token!",
+    });
+  }
+  session.revoked = true;
+  await session.save();
+
+  res.clearCookie("refreshToken");
+  res.status(200).json({
+    message: "Logged out successfully",
+  });
+}
