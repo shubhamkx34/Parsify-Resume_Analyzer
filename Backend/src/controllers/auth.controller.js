@@ -157,7 +157,7 @@ export async function refreshToken(req, res) {
   //To extract the id inside refreshToken
   const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
 
-  //check after Log-out when session set revoked:true
+  //check if user had Logged-out  and  session set to [revoked:true] ?
   const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex");
 
   const session = await sessionModel.findOne({
@@ -222,8 +222,9 @@ export async function getUser(req, res) {
   }
   //jwt.verify is used to decode the token to extract user details by considering token and jwt.secret
   //This can be done by decoding the token which has _id stored from the database , so it will fetch the details and show who registered.
+  let decoded;
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
     return res.status(401).json({
       message: "Invalid Token!!!",
