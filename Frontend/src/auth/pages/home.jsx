@@ -1,7 +1,7 @@
 import React from "react";
 // import LightRays from "../components/LightRays";
 
-function home() {
+function Home() {
   return (
     <div className="h-screen overflow-hidden w-screen bg-slate-950"> 
       {/* <div className="absolute inset-0 z-0">
@@ -35,5 +35,5 @@ function home() {
   );
 }
 
-export default home;
+export default Home;
 
