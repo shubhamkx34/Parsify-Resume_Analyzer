@@ -3,11 +3,11 @@
 
 import { createContext, useState } from "react";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(); //The Storage Box
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {  //This activates the storage across your whole website so every page can share the data.
   const [user, setuser] = useState(null);
   const [loading, setloading] = useState(false);
 
-  return <AuthContext.provider value={{ user, setuser, loading, setloading }}>{children}</AuthContext.provider>;
+  return <AuthContext.Provider value={{ user, setuser, loading, setloading }}>{children}</AuthContext.Provider>;
 };

@@ -15,8 +15,9 @@ export const useauth = () => {
     try {
       const data = await register({ username, email, password }); //Register api call from react api layer
       setuser(data.user);
-    } catch (err) {
-      console.log(err);
+      return { success: true };
+    } catch (errorMessage) {
+      return { success: false, message: errorMessage }; //// Returns the backend error text
     } finally {
       setloading(false);
     }
@@ -38,9 +39,8 @@ export const useauth = () => {
       const data = await login({ email, password }); //Login api is called from react api layer [auth.api.js]
       setuser(data.user); //Receives the response from the backend via [auth.api.js]
       return { success: true };
-      await new Promise(resolve => setTimeout(resolve, 2000));
     } catch (errorMessage) {
-      return { success: false, message: errorMessage } //// Returns the backend error text
+      return { success: false, message: errorMessage }; //// Returns the backend error text
     } finally {
       setloading(false);
     }

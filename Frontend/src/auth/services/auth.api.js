@@ -8,7 +8,7 @@ export async function register({ username, email, password }) {
     const response = await axios.post("http://localhost:3000/api/auth/register", { username, email, password }, { withCredentials: true });
     return response.data; //When Axios gets a reply from the server, it wraps the reply inside a large object called response —such as { message: "User registered successfully" } or the user's profile info.
   } catch(err){
-    console.log(err);
+   throw err.response?.data?.message || "Register failed!";
   }
 }
 
