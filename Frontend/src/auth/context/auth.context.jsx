@@ -2,7 +2,7 @@
 //It allows you to share user data across your entire app without passing variables manually from parent to child components.
 
 import { createContext, useState,useEffect } from "react";
-import getUser from "../services/auth.api"
+import {getUser} from "../services/auth.api"
 
 export const AuthContext = createContext(); //The Storage Box
 

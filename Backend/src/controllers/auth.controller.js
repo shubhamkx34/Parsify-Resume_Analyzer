@@ -212,8 +212,11 @@ export async function refreshToken(req, res) {
 
 //This is the end-point for showing the details of the user in response , which requested/registered in the server
 export async function getUser(req, res) {
+
   //This tell where the accesstoken is stored in the browser/frontend ; currently using postman so we have to define header/authorization under which a token is stored there
-  const token = req.headers.authorization?.split(" ")[1];
+ const token = req.headers.authorization?.split(" ")[1];
+  
+
 
   if (!token) {
     return res.status(401).json({

@@ -7,8 +7,8 @@ export async function register({ username, email, password }) {
   try {
     const response = await axios.post("http://localhost:3000/api/auth/register", { username, email, password }, { withCredentials: true });
     return response.data; //When Axios gets a reply from the server, it wraps the reply inside a large object called response —such as { message: "User registered successfully" } or the user's profile info.
-  } catch(err){
-   throw err.response?.data?.message || "Register failed!";
+  } catch (err) {
+    throw err.response?.data?.message || "Register failed!";
   }
 }
 
@@ -16,28 +16,41 @@ export async function register({ username, email, password }) {
 export async function login({ email, password }) {
   try {
     const response = await axios.post("http://localhost:3000/api/auth/login", { email, password }, { withCredentials: true });
-    return response.data;  //Send the response received from backend to useauth.js for saving data at the frontend using [auth.context.js]
-  } catch(err){
-   throw err.response?.data?.message || "Login failed!";
+    return response.data; //Send the response received from backend to useauth.js for saving data at the frontend using [auth.context.js]
+  } catch (err) {
+    throw err.response?.data?.message || "Login failed!";
   }
 }
 
 //JS function for logout
-export async function logout() {
+export async function logout(accessToken) {
   try {
-    const response = await axios.get("http://localhost:3000/api/auth/logout",{ withCredentials: true });
-    return response.data; 
-  } catch(err){
+    const response = await axios.get("http://localhost:3000/api/auth/logout", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (err) {
     console.log(err);
   }
 }
 
 //JS function for fetching user details
-export async function getUser() {
+// Accept accessToken here
+export async function getUser(accessToken) {
   try {
-    const response = await axios.get("http://localhost:3000/api/auth/get-user",{ withCredentials: true });
-    return response.data; 
-  } catch(err){
+    const response = await axios.get("http://localhost:3000/api/auth/get-user", {
+      // 1. Manually attach the access token header!
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      // 2. Keep this so cookies are still sent if needed
+      withCredentials: true,
+    });
+    return response.data; //This data will be received by useEffect function at auth.context.jsx
+  } catch (err) {
     console.log(err);
   }
 }

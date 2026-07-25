@@ -41,7 +41,7 @@ const Register = () => {
 
       <h1 className="text-white font-[font2] text-7xl absolute top-32 z-10 ">Sign up</h1>
 
-      <form onSubmit={handlesubmit} className="text-white  font-[font1] flex flex-col top-68 gap-5 relative z-10">
+      <form onSubmit={handleSubmit} className="text-white  font-[font1] flex flex-col top-68 gap-5 relative z-10">
         <div className="username flex flex-col">
           <label htmlFor="username">Username : </label>
           <input
