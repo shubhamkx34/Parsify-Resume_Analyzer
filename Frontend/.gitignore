@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .env
 flow.txt
-
+temp.js
 
 
 # Editor directories and files

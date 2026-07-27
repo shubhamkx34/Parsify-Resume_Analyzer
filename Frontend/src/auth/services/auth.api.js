@@ -1,5 +1,4 @@
 //This file lies under Api layer which connects the frontend to backend using package called axios.
-
 import axios from "axios";
 
 //This is a frontend JavaScript function that registers a new user by sending their account details to a backend server.
@@ -23,12 +22,9 @@ export async function login({ email, password }) {
 }
 
 //JS function for logout
-export async function logout(accessToken) {
+export async function logout() {
   try {
     const response = await axios.get("http://localhost:3000/api/auth/logout", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
       withCredentials: true,
     });
     return response.data;
@@ -49,7 +45,7 @@ export async function getUser(accessToken) {
       // 2. Keep this so cookies are still sent if needed
       withCredentials: true,
     });
-    return response.data; //This data will be received by useEffect function at auth.context.jsx
+    return response.data; //This data will be received by useEffect function at useauth.js
   } catch (err) {
     console.log(err);
   }

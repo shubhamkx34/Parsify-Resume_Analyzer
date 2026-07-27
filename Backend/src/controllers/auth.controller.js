@@ -212,32 +212,7 @@ export async function refreshToken(req, res) {
 
 //This is the end-point for showing the details of the user in response , which requested/registered in the server
 export async function getUser(req, res) {
-
-  //This tell where the accesstoken is stored in the browser/frontend ; currently using postman so we have to define header/authorization under which a token is stored there
- const token = req.headers.authorization?.split(" ")[1];
-  
-
-
-  if (!token) {
-    return res.status(401).json({
-      message: "Token not found My friend!",
-    });
-  }
-  //jwt.verify is used to decode the token to extract user details by considering token and jwt.secret
-  //This can be done by decoding the token which has _id stored from the database , so it will fetch the details and show who registered.
-  let decoded;
-  try {
-     decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (err) {
-    return res.status(401).json({
-      message: "Invalid Token!!!",
-    });
-  }
-  const user = await userModel.findById(decoded.id);
-   if (!user) {
-      return res.status(401).json({ message: "User no longer exists!" });
-    }
-
+  const user = req.user;
   res.status(200).json({
     message: "User Fetched Successfully! ",
     user: {

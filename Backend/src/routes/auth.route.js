@@ -1,5 +1,6 @@
 import {Router} from "express"
 import { register, login,refreshToken,getUser,logout } from '../controllers/auth.controller.js';
+import {protectRoute} from "../middlewares/auth.middleware.js"
 
 const authRouter = Router()
 
@@ -13,7 +14,7 @@ authRouter.post("/login",login)
 authRouter.get("/refresh-token",refreshToken)
 
 //This is the end-point for showing the details of the user , which requested/registered in the server
-authRouter.get("/get-user",getUser)
+authRouter.get("/get-user",protectRoute,getUser)
 
 authRouter.get("/logout",logout)
 
