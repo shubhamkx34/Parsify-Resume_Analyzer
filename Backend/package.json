@@ -21,7 +21,9 @@
   "jsonwebtoken": "^9.0.3",
   "mongoose": "^9.8.0",
   "morgan": "^1.11.0",
+  "multer": "^2.2.0",
   "openai": "^6.49.0",
+  "pdf-parse": "^2.4.5",
   "zod": "^4.4.3",
   "zod-to-json-schema": "^3.25.2"
  }

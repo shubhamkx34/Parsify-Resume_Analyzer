@@ -234,6 +234,9 @@ export async function getUser(req, res) {
     });
   }
   const user = await userModel.findById(decoded.id);
+   if (!user) {
+      return res.status(401).json({ message: "User no longer exists!" });
+    }
 
   res.status(200).json({
     message: "User Fetched Successfully! ",
