@@ -50,8 +50,10 @@ const skillGapSchema = new mongoose.Schema({
     type: String,
     enum: ["low", "medium", "high"],
     required: [true, "Severity is required"],
+  },},{
+    _id: false,
   },
-});
+);
 
 const preparationPlanSchema = new mongoose.Schema({
   day: {
@@ -68,7 +70,9 @@ const preparationPlanSchema = new mongoose.Schema({
       required: [true, "Task is required"],
     },
   ],
-});
+},{
+    _id: false,
+  },);
 
 
 const finalReportSchema = new mongoose.Schema({
@@ -95,12 +99,17 @@ const finalReportSchema = new mongoose.Schema({
 technicalQuestions :[technicalQuestionSchema],
 behavioralQuestions: [behavioralQuestionSchema],
 skillGaps: [skillGapSchema],
-preparationPlan:[preparationPlanSchema]
+preparationPlan:[preparationPlanSchema],
+
+user:{
+type:mongoose.Schema.Types.ObjectId,
+ref:"users"
+}
 },{
     timestamps: true  //timestamps: true is a built-in Mongoose feature that automatically tracks time for your database records
 });
 
 
-const finalReportModel = mongoose.model("ResumeReport",finalReportSchema)
+const finalReportModel = mongoose.model("ResumeReports",finalReportSchema,"ResumeReports")
 
 export default finalReportModel

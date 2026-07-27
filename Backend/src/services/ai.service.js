@@ -1,6 +1,6 @@
 import Groq from "groq-sdk";
 import { z } from "zod";
-import { jobDescription, selfDescription } from "./temp.js";
+
 
 const client = new Groq({
   apiKey: process.env.GROQ_API_KEY,
