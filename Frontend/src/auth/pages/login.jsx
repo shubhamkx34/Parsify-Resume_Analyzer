@@ -1,5 +1,5 @@
 import React from "react";
-import CursorGrid from "../components/CursorGrid";
+import CursorGrid from "../../ui/components/CursorGrid";
 import { Link } from "react-router";
 import { useauth } from "../hooks/useauth";
 import { useState } from "react";

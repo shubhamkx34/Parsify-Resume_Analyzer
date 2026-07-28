@@ -1,5 +1,5 @@
 import React from "react";
-import CursorGrid from "../components/CursorGrid";
+import CursorGrid from "../../ui/components/CursorGrid";
 import { Link } from "react-router";
 import { useauth } from "../hooks/useauth";
 import { useState } from "react";
@@ -18,9 +18,9 @@ const Register = () => {
     e.preventDefault();
     setError("");
     // Save the result returned by useauth.js
-    const result = await handleLogin({ email, password });
+    const result = await handleRegister({ username, email, password });
     if (result.success) {
-      Navigate("/"); // Only go to home page if login succeeded!
+      Navigate("/login"); //Go to login page after registration
     } else {
       setError(result.message); // If it failed, save the backend error text
     }
