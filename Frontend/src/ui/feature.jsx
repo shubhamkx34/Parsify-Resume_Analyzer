@@ -1,6 +1,10 @@
-import Prism from "./components/prism";
+import LightRays from "./components/LightRays";
 import AnimatedList from "./components/animatedList";
+import { RiArrowLeftCircleFill } from "@remixicon/react";
+import { useNavigate } from "react-router";
+
 const Feature = () => {
+  const navigate = useNavigate()
   const items = [
     <span key="1" className="block">
       <strong className="text-lg font-semibold text-amber-400 block mb-1">⚡ Instant ATS Match Score</strong>
@@ -74,8 +78,31 @@ const Feature = () => {
   ];
   return (
     <div className="h-screen w-screen  relative z-0 bg-slate-950  text-white ">
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+ className="absolute top-6 left-6 z-50 p-2 cursor-pointer text-white hover:text-gray-400 transition-colors"
+      >
+        <RiArrowLeftCircleFill size={60} />
+      </button>
+
       <div style={{ width: "100%", height: "100%", position: "absolute" }}>
-        <Prism animationType="rotate" timeScale={0.5} height={3.5} baseWidth={5.5} scale={3.6} hueShift={0} colorFrequency={1} noise={0} glow={1} />
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#ffffff"
+          raysSpeed={1}
+          lightSpread={0.5}
+          rayLength={3}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0}
+          distortion={0}
+          className="custom-rays"
+          pulsating={false}
+          fadeDistance={1}
+          saturation={1}
+        />
       </div>
 
       <div className="relative z-10 h-full w-full flex flex-col items-center justify-center">

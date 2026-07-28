@@ -9,8 +9,8 @@ import Working from './ui/working.jsx'
 //Creates router object using createBrowserRouter and exports it (so App.jsx can use it). It takes an array [...] of route objects.
 export const router = createBrowserRouter([
    { path: "/register", element: <Register />},
-  { path: "/login", element: <Login /> },
-  { path: "/", element:<Protected><Home /></Protected>},
-{path:"/feature",element: <Features />},
-{path:"/working",element: <Working />}
+   { path: "/login", element: <Login /> },
+   { path: "/", element:<Protected><Home /></Protected>},
+   {path:"/feature",element:<Protected><Features /></Protected> },
+   {path:"/working",element: <Protected><Working /></Protected>}
 ])

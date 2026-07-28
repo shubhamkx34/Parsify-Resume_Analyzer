@@ -1,11 +1,22 @@
 import React from "react";
 import LightRays from "./components/LightRays";
 import ScrollStack, { ScrollStackItem } from "./components/scrollStack";
+import { RiArrowLeftCircleFill } from "@remixicon/react";
+import { useNavigate } from "react-router";
 
 const Working = () => {
+    const navigate = useNavigate()
   return (
     <div className="h-screen w-screen relative z-0 bg-slate-950 text-white overflow-hidden font-sans">
-      
+       
+       <button
+        onClick={() => {
+          navigate(-1);
+        }}
+ className="absolute top-6 left-6 z-50 p-2 cursor-pointer text-white hover:text-gray-400 transition-colors"
+      >
+        <RiArrowLeftCircleFill size={60} />
+      </button>
 
       <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
         <LightRays
