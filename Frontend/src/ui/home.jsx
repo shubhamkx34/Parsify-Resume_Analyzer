@@ -1,52 +1,56 @@
 import React from "react";
 import SpecularButton from "./components/spectecularButton.jsx";
 import Navbar from "./components/navbar.jsx";
-import Beams from "./components/beam.jsx"
+import Beams from "./components/beam.jsx";
+import { RiSuitcaseLine } from "@remixicon/react";
+import { RiProfileLine } from "@remixicon/react";
 
 const home = () => {
   return (
-    <div className="h-screen relative z-0 w-screen text-white bg-gray-950">
-
-<div style={{ width: '100%', height: '100%', position: 'absolute' }}>
-  <Beams
-    beamWidth={3.2}
-    beamHeight={30}
-    beamNumber={20}
-    lightColor="#ffffff"
-    speed={2}
-    noiseIntensity={1.75}
-    scale={0.2}
-    rotation={30}
-  />
-</div>
+    <div className="h-screen relative z-0 overflow-hidden  w-screen text-white bg-gray-950">
+      <div style={{ width: "100%", height: "100%", position: "absolute" }}>
+        <Beams beamWidth={3.2} beamHeight={30} beamNumber={20} lightColor="#ffffff" speed={2} noiseIntensity={1.75} scale={0.2} rotation={30} />
+      </div>
 
       <div className="main relative z-50">
         <Navbar />
 
-        <form >
-          <div className="flex justify-between pt-18 pl-40 pr-40 ">
+        <form>
+          <div className="flex justify-between pt-16  px-32 ">
             <div className="jobD flex flex-col ">
-              <label className="text-bold text-2xl font-[font2] text-center "> Enter Job Description : </label>
-              <input
-                className="h-[30vh] w-[70vh] text-center text-wrap mt-3 overflow-y-auto bg-white text-black font-semibold rounded-4xl"
+              <label className="flex justify-center gap-3 font-bold text-2xl font-[font2]  tracking-wide">
+                <RiSuitcaseLine />
+                <span>Target Job Description :</span>
+              </label>
+              <textarea
+                className="h-[35vh] w-[70vh] p-6 text-center font-[font1] mt-3 overflow-y-auto text-slate-100 font-semibold rounded-2xl placeholder-gray-300 focus:outline-none border border-slate-800 resize-none  focus:ring-2 focus:border-slate-400 focus:ring-slate-400/20 transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md"
                 type="text"
-                placeholder="Enter Job Description Here !"
-              />{" "}
+                placeholder="Paste the job requirements, responsibilities, and tech stack here..."
+              />
             </div>
 
             <div className="selfD flex flex-col">
-              <label className="text-bold text-2xl font-[font2] text-center"> Enter Self Description : </label>
-              <input
-                className="h-[30vh] w-[70vh] text-center mt-3 text-wrap overflow-y-auto bg-white text-black font-semibold  rounded-4xl"
+              <label className="text-bold text-2xl  font-[font2] text-center tracking-wide">
+             Quick Self-Description
+                 <span className="border text-sm mr-2 ml-2 rounded py-2 font-[font2] px-3 backdrop-blur-2xl">
+                  Optional
+                  </span>
+                :
+              </label>
+              <textarea
+                className="p-6 placeholder-gray-300 h-[35vh] w-[70vh] text-center mt-3 font-[font1] overflow-y-auto   text-slate-100 font-semibold  rounded-2xl focus:outline-none border border-slate-800  resize-none focus:border-slate-400 focus:ring-slate-400/20 focus:ring-2  transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md "
                 type="text"
-                placeholder="Enter Self Description Here !"
+                placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
               />
             </div>
           </div>
 
-          <div className="flex flex-col w-70 mt-12 ml-[41vw] ">
-            <label className="text-bold text-center text-2xl font-[font2]">Upload Resume : </label>
-            <div className="border-1 rounded-3xl mt-2">
+          <div className="flex flex-col w-70 mt-8 ml-[41vw] ">
+            <label className=" flex items-center gap-3  text-bold text-center text-2xl font-[font2]">
+              <RiProfileLine className="text-white ml-6" />
+              <span>Upload Resume :</span> 
+              </label>
+            <div className="border-1 backdrop-blur-3xl rounded-3xl mt-2">
               <label for="dropzone-file" className="flex flex-col items-center justify-center w-60 h-35  cursor-pointer ">
                 <div className="flex flex-col items-center justify-center  pl-8">
                   <svg
@@ -77,7 +81,7 @@ const home = () => {
           </div>
 
           <SpecularButton
-            className="ml-[45.4vw] mt-8"
+            className="ml-[43vw] mt-8"
             size="lg"
             radius={19}
             tint="#ffffff"
@@ -96,7 +100,7 @@ const home = () => {
             autoAnimate={false}
             onClick={() => console.log("clicked")}
           >
-            Submit
+            Generate Report
           </SpecularButton>
         </form>
       </div>

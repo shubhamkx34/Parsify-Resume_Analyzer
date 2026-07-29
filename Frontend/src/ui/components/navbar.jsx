@@ -4,7 +4,7 @@ import ShinyText from "./shineText";
 const navbar = () => {
   return (
     <div className="pt-2 h-[10vh] w-screen flex text-white justify-between">
-   <ShinyText className=" text-4xl font-[font2] mt-4 ml-13"
+   <ShinyText className=" text-4xl font-[font2] mt-4 ml-13 cursor-pointer"
   text="Parsify"
   speed={2}
   delay={0}
@@ -23,7 +23,7 @@ const navbar = () => {
         <Link className="pr-10" to="/working">
           How It Works
         </Link>
-        <button className="cursor-pointer py-2 px-5 bg-white text-black font-[font1] rounded-2xl">Logout</button>
+        <button className="cursor-pointer py-2 px-5 active:scale-95 bg-white text-black font-[font1] rounded-2xl">Logout</button>
       </div>
     </div>
   );
