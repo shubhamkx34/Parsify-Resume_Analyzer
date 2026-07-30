@@ -1,24 +1,23 @@
 import React from "react";
-import LightRays from "./components/LightRays";
-import ScrollStack, { ScrollStackItem } from "./components/scrollStack";
+import LightRays from "../components/LightRays";
+import ScrollStack, { ScrollStackItem } from "../components/scrollStack";
 import { RiArrowLeftCircleFill } from "@remixicon/react";
 import { useNavigate } from "react-router";
 
 const Working = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="h-screen w-screen relative z-0 bg-slate-950 text-white overflow-hidden font-sans">
-       
-       <button
+      <button
         onClick={() => {
           navigate(-1);
         }}
- className="absolute top-6 left-6 z-50 p-2 cursor-pointer text-white hover:text-gray-400 transition-colors"
+        className="absolute top-6 left-6 z-50 p-2 cursor-pointer text-white hover:text-gray-400 transition-colors"
       >
         <RiArrowLeftCircleFill size={60} />
       </button>
 
-      <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+      <div style={{ width: "100%", height: "100%", position: "absolute" }}>
         <LightRays
           raysOrigin="top-center"
           raysColor="#ffffff"
@@ -36,7 +35,6 @@ const Working = () => {
         />
       </div>
 
-
       <div className="relative z-10 h-full w-full">
         <ScrollStack
           itemDistance={50}
@@ -44,11 +42,10 @@ const Working = () => {
           baseScale={0.85}
           itemScale={0.03}
           blurAmount={4}
-         className="w-full h-full max-w-4xl mx-auto px-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="w-full h-full max-w-4xl mx-auto px-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {/* Page Header (Sits at the top of the scrollable container) */}
           <div className="text-center mb-12 pt-6">
-          
             <h1 className="text-5xl font-[font2] font-bold mt-2 tracking-wide">
               How Our <span className="text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]">Resume Analyzer</span> Works
             </h1>
@@ -60,13 +57,12 @@ const Working = () => {
           {/* STEP 1: RESUME UPLOAD */}
           <ScrollStackItem itemClassName="bg-slate-900/90 border border-slate-800 backdrop-blur-md flex flex-col justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
             <div className="flex items-center space-x-4 mb-4">
-              <span className="px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">
-                Step 01
-              </span>
+              <span className="px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">Step 01</span>
               <h2 className="text-3xl font-bold text-white">Upload Your PDF Resume</h2>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              Drop your latest resume into the upload zone. Our system cleanly parses your text, work history, and formatting exactly as an Applicant Tracking System (ATS) would—ensuring no critical details are missed.
+              Drop your latest resume into the upload zone. Our system cleanly parses your text, work history, and formatting exactly as an Applicant
+              Tracking System (ATS) would—ensuring no critical details are missed.
             </p>
             <div className="flex space-x-6 text-sm text-gray-400 border-t border-slate-800/80 pt-4">
               <span>✓ ATS Parsing Verification</span>
@@ -78,13 +74,12 @@ const Working = () => {
           {/* STEP 2: JOB DESCRIPTION */}
           <ScrollStackItem itemClassName="bg-slate-900/90 border border-slate-800 backdrop-blur-md flex flex-col justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
             <div className="flex items-center space-x-4 mb-4">
-              <span className="px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">
-                Step 02
-              </span>
+              <span className="px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">Step 02</span>
               <h2 className="text-3xl font-bold text-white">Paste the Job Description</h2>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              Copy and paste the exact requirements, skills, and daily responsibilities of the role you are targeting. This gives the AI the exact benchmark it needs to evaluate your profile against the employer's expectations.
+              Copy and paste the exact requirements, skills, and daily responsibilities of the role you are targeting. This gives the AI the exact
+              benchmark it needs to evaluate your profile against the employer's expectations.
             </p>
             <div className="flex space-x-6 text-sm text-gray-400 border-t border-slate-800/80 pt-4">
               <span>✓ Keyword Extraction</span>
@@ -96,13 +91,13 @@ const Working = () => {
           {/* STEP 3: SELF DESCRIPTION (YOUR SECRET WEAPON) */}
           <ScrollStackItem itemClassName="bg-slate-900/90 border border-cyan-500/50 backdrop-blur-md flex flex-col justify-center shadow-[0_0_30px_rgba(34,211,238,0.15)]">
             <div className="flex items-center space-x-4 mb-4">
-              <span className="px-4 py-1 rounded-full bg-cyan-500 text-black font-extrabold text-sm">
-                Step 03 • Unique Feature
-              </span>
+              <span className="px-4 py-1 rounded-full bg-cyan-500 text-black font-extrabold text-sm">Step 03 • Unique Feature</span>
               <h2 className="text-3xl font-bold text-white">Add Your Self-Description</h2>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              Standard parsers miss context. Use our custom context box to explain what you actually built in your college projects, your domain passion (like DeFi or Full-Stack), or why you are transitioning careers. The AI uses this to find hidden strengths your resume might not highlight.
+              Standard parsers miss context. Use our custom context box to explain what you actually built in your college projects, your domain
+              passion (like DeFi or Full-Stack), or why you are transitioning careers. The AI uses this to find hidden strengths your resume might not
+              highlight.
             </p>
             <div className="flex space-x-6 text-sm text-cyan-300/80 border-t border-slate-800/80 pt-4">
               <span>★ Enhances Project Context</span>
@@ -114,13 +109,12 @@ const Working = () => {
           {/* STEP 4: AI DEEP SCAN */}
           <ScrollStackItem itemClassName="bg-slate-900/90 border border-slate-800 backdrop-blur-md flex flex-col justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
             <div className="flex items-center space-x-4 mb-4">
-              <span className="px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">
-                Step 04
-              </span>
+              <span className="px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold text-sm">Step 04</span>
               <h2 className="text-3xl font-bold text-white">AI Deep-Scan & Evaluation</h2>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              Once you click generate, our semantic analysis engine cross-examines all three inputs simultaneously. It doesn't just do mindless word-matching; it understands technical relationships (e.g., knowing that Express.js qualifies as backend Node.js experience).
+              Once you click generate, our semantic analysis engine cross-examines all three inputs simultaneously. It doesn't just do mindless
+              word-matching; it understands technical relationships (e.g., knowing that Express.js qualifies as backend Node.js experience).
             </p>
             <div className="flex space-x-6 text-sm text-gray-400 border-t border-slate-800/80 pt-4">
               <span>⚡ Microsecond Processing</span>
@@ -132,13 +126,13 @@ const Working = () => {
           {/* STEP 5: ACTIONABLE REPORT */}
           <ScrollStackItem itemClassName="bg-slate-900/90 border border-slate-800 backdrop-blur-md flex flex-col justify-center shadow-[0_0_30px_rgba(0,0,0,0.5)]">
             <div className="flex items-center space-x-4 mb-4">
-              <span className="px-4 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 font-bold text-sm">
-                Step 05
-              </span>
+              <span className="px-4 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 font-bold text-sm">Step 05</span>
               <h2 className="text-3xl font-bold text-white">Get Your Interview Roadmap</h2>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              Receive your final downloadable report. Discover your exact 0–100% match score, see which required tools you need to brush up on, practice with custom technical and behavioural interview questions predicted from your projects, and follow a Day-Wise study plan to ace the interview.
+              Receive your final downloadable report. Discover your exact 0–100% match score, see which required tools you need to brush up on,
+              practice with custom technical and behavioural interview questions predicted from your projects, and follow a Day-Wise study plan to ace
+              the interview.
             </p>
             <div className="flex space-x-6 text-sm text-gray-400 border-t border-slate-800/80 pt-4">
               <span>📈 Overall Match Score</span>
@@ -146,10 +140,8 @@ const Working = () => {
               <span>🗺️ Day-Wise Study Plan</span>
             </div>
           </ScrollStackItem>
-
         </ScrollStack>
       </div>
-
     </div>
   );
 };

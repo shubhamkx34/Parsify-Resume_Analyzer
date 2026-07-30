@@ -3,7 +3,7 @@ import authRouter from './routes/auth.route.js';
 import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import uploadRouter from "./routes/uploadData.route.js";
+import uploadRouter from "./routes/UPFE_Data.route.js";
 
 
 const app = express();
@@ -20,6 +20,6 @@ app.use(cors({
 app.use("/api/auth",authRouter)
 
 //User Upload's Api
-app.use("/api/upload",uploadRouter)
+app.use("/api",uploadRouter)
 
 export default app

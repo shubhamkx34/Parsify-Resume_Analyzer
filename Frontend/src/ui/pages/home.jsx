@@ -1,7 +1,7 @@
 import React from "react";
-import SpecularButton from "./components/spectecularButton.jsx";
-import Navbar from "./components/navbar.jsx";
-import Beams from "./components/beam.jsx";
+import SpecularButton from "../components/spectecularButton.jsx";
+import Navbar from "../components/navbar.jsx";
+import Beams from "../components/beam.jsx";
 import { RiSuitcaseLine } from "@remixicon/react";
 import { RiProfileLine } from "@remixicon/react";
 
@@ -31,11 +31,8 @@ const home = () => {
 
             <div className="selfD flex flex-col">
               <label className="text-bold text-2xl  font-[font2] text-center tracking-wide">
-             Quick Self-Description
-                 <span className="border text-sm mr-2 ml-2 rounded py-2 font-[font2] px-3 backdrop-blur-2xl">
-                  Optional
-                  </span>
-                :
+                Quick Self-Description
+                <span className="border text-sm mr-2 ml-2 rounded py-2 font-[font2] px-3 backdrop-blur-2xl">Optional</span>:
               </label>
               <textarea
                 className="p-6 placeholder-gray-300 h-[35vh] w-[70vh] text-center mt-3 font-[font1] overflow-y-auto   text-slate-100 font-semibold  rounded-2xl focus:outline-none border border-slate-800  resize-none focus:border-slate-400 focus:ring-slate-400/20 focus:ring-2  transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md "
@@ -48,8 +45,8 @@ const home = () => {
           <div className="flex flex-col w-70 mt-8 ml-[41vw] ">
             <label className=" flex items-center gap-3  text-bold text-center text-2xl font-[font2]">
               <RiProfileLine className="text-white ml-6" />
-              <span>Upload Resume :</span> 
-              </label>
+              <span>Upload Resume :</span>
+            </label>
             <div className="border-1 backdrop-blur-3xl rounded-3xl mt-2">
               <label for="dropzone-file" className="flex flex-col items-center justify-center w-60 h-35  cursor-pointer ">
                 <div className="flex flex-col items-center justify-center  pl-8">

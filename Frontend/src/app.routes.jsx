@@ -2,10 +2,10 @@ import { createBrowserRouter } from "react-router"//responsible for building you
 import Login from "./auth/pages/login.jsx"
 import Register from "./auth/pages/register.jsx"
 import Protected from "./auth/components/protected.jsx"
-import Home from "./ui/home.jsx"
-import Features from "./ui/feature.jsx"
-import Working from './ui/working.jsx'
-import Report from "./ui/report.jsx"
+import Home from "./ui/pages/home.jsx"
+import Features from "./ui/pages/feature.jsx"
+import Working from './ui/pages/working.jsx'
+import Report from "./ui/pages/report.jsx"
 
 //Creates router object using createBrowserRouter and exports it (so App.jsx can use it). It takes an array [...] of route objects.
 export const router = createBrowserRouter([

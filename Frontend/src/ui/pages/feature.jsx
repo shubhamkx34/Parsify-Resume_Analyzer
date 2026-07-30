@@ -1,10 +1,10 @@
-import LightRays from "./components/LightRays";
-import AnimatedList from "./components/animatedList";
+import LightRays from "../components/LightRays";
+import AnimatedList from "../components/animatedList";
 import { RiArrowLeftCircleFill } from "@remixicon/react";
 import { useNavigate } from "react-router";
 
 const Feature = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const items = [
     <span key="1" className="block">
       <strong className="text-lg font-semibold text-amber-400 block mb-1">⚡ Instant ATS Match Score</strong>
@@ -82,7 +82,7 @@ const Feature = () => {
         onClick={() => {
           navigate(-1);
         }}
- className="absolute top-6 left-6 z-50 p-2 cursor-pointer text-white hover:text-gray-400 transition-colors"
+        className="absolute top-6 left-6 z-50 p-2 cursor-pointer text-white hover:text-gray-400 transition-colors"
       >
         <RiArrowLeftCircleFill size={60} />
       </button>

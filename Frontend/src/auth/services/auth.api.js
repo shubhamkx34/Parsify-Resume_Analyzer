@@ -5,7 +5,7 @@ import axios from "axios";
 export async function register({ username, email, password }) {
   try {
     const response = await axios.post("http://localhost:3000/api/auth/register", { username, email, password }, { withCredentials: true });
-    return response.data; //When Axios gets a reply from the server, it wraps the reply inside a large object called response —such as { message: "User registered successfully" } or the user's profile info.
+    return response.data; //When Axios gets a reply from the server, it wraps the reply inside a large object called response —such as { message: "User registered successfully" } or the user's profile info. and sends it to useauth
   } catch (err) {
     throw err.response?.data?.message || "Register failed!";
   }
