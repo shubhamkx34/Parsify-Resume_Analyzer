@@ -37,7 +37,7 @@ export async function fetchData(req, res) {
 
   //req.params captures the reportId from the URL parameters of the incoming request. This is typically used to identify which specific report the user wants to retrieve.
   const { reportId } = req.params; 
-  const report = await finalReportModel.findOne({ _id: reportId, user: req.user.id });
+  const Report = await finalReportModel.findOne({ _id: reportId, user: req.user.id });
 
   if(!report){
     return res.status(404).json({
@@ -47,13 +47,13 @@ export async function fetchData(req, res) {
 
   res.status(200).json({
     message:"Report fetched successfully!",
-    report
+    Report
   })
 }
 
 //Controller to fetch all the reports of a specific user
 export async function fetchAllData(req,res){
-const reports = await finalReportModel.find({user:req.user.id}).sort({createdAt:-1}).select("-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan ")
+const Reports = await finalReportModel.find({user:req.user.id}).sort({createdAt:-1}).select("-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan ")
 //({createdAt:-1})->Sorts the reports in descending order of creation time
 
   if(!reports){
@@ -63,6 +63,6 @@ const reports = await finalReportModel.find({user:req.user.id}).sort({createdAt:
   }
 res.status(200).json({
     message:"Reports fetched successfully!",
-    reports
+    Reports
 })
 }

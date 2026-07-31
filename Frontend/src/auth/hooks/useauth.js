@@ -39,7 +39,7 @@ export const useauth = () => {
       const data = await register({ username, email, password }); 
       setUser(data.user);
       localStorage.setItem("token", data.accessToken); // Save to browser storage
-      setToken(data.accessToken); 
+      setToken(data.accessToken); //save to react state so that it can be used in other components
       return { success: true };
     } catch (errorMessage) {
       return { success: false, message: errorMessage }; 
