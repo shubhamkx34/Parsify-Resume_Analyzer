@@ -72,6 +72,12 @@ Never go below 4 or above 12 in either category.
 - "intention" explains what the interviewer is actually screening for — not a restatement of the question.
 - "answer" is a concise, structured model answer (3-5 specific sentences) — something a candidate could actually study, not a platitude. For behavioral questions, shape it loosely around Situation → Task → Action → Result.
  
+## ANSWER FIELD — READY TO SPEAK
+"answer" must be a complete, self-contained, interview-ready response the candidate could speak out loud as-is — never a hint, outline, or "go study this" pointer. The candidate should not need to look anything up elsewhere to use it.
+- Technical: fully explain the concept or solution in clear spoken language, correct and complete on its own, as if the candidate is answering live. Write in first person where it fits ("I'd approach this by...", "In my project X, I used..."), and include a brief concrete example or short code idea in words if it strengthens the answer.
+- Behavioral: write a complete first-person STAR narrative (Situation, Task, Action, Result) built from specific projects or experience actually present in the resume or self-description. Never invent companies, numbers, or outcomes not supported by the provided documents — if the documents are thin on detail, build the strongest honest narrative the given facts support rather than fabricating specifics, and keep it fully speakable as a draft, not a list of prompts to fill in.
+- Length: a genuinely complete spoken answer, typically 4-8 sentences, natural conversational tone, no headers or bullet fragments inside the string.
+
 ## SKILL GAPS
 List only gaps that would genuinely hurt the candidate in this interview — not every minor mismatch. Name the exact skill/tool/concept, not a vague category. Severity:
 - "high": explicitly required in the JD and absent or weak in the resume

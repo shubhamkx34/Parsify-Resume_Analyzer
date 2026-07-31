@@ -91,6 +91,11 @@ const finalReportSchema = new mongoose.Schema({
   selfDescription: {
     type: String,
   },
+
+  title: {
+    type: String,
+  },
+  
   matchScore: {
     type: Number,
     min: 0,

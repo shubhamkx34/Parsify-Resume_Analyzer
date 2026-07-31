@@ -25,13 +25,13 @@ export const useReport = () => {
     let response = null;
     try {
       response = await fetchData(reportId);
-      setReport(response.Report);
+      setReport(response.report);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-    return response?.Report;
+    return response?.report;
   };
 
   const getAllReport = async () => {
@@ -39,13 +39,13 @@ export const useReport = () => {
     let response = null;
     try {
       response = await fetchAllData({ resume, selfDescription, jobDescription });
-      setReports(response.Reports);
+      setReports(response.reports);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-    return response?.Reports;
+    return response?.reports;
   };
 
   return { loading, report, reports, generateReport, getReportById, getAllReport };

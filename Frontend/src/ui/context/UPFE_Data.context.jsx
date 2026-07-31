@@ -8,8 +8,9 @@ export const UPFE_DataProvider = ({ children }) => {
   const [reports, setReports] = useState([]);
 
 
-  return 
+  return(
   <UPFE_DataContext.Provider value={{ loading, setLoading, report, setReport, reports, setReports }}>
     {children}
-    </UPFE_DataContext.Provider>;
+    </UPFE_DataContext.Provider>)
+
 };
