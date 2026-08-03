@@ -273,7 +273,7 @@ const Report = () => {
             </svg>
 
             <p className="text-sm text-gray-300 mt-2">
-              Strong match for <span className="font-semibold text-white">{reportData?.title || "Target Role"}</span>.
+              Match Data for <span className="font-semibold text-white">{reportData?.title || "Target Role"}</span>.
             </p>
           </div>
 

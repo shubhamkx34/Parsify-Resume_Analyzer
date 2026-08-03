@@ -28,7 +28,7 @@ export async function fetchData(reportId) {
   return response.data;
 }
 
-export async function fetchAllData({}) {
+export async function fetchAllData() {
     const token = localStorage.getItem("token"); // Grab token
   const response = await axios.get("http://localhost:3000/api/fetch", {
     headers: {
