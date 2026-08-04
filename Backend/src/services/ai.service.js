@@ -1,6 +1,6 @@
 import Groq from "groq-sdk";
 import { z } from "zod";
-
+import puppeteer from "puppeteer";
 
 const client = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -30,9 +30,7 @@ const finalReportSchema = z.object({
     .array(
       z.object({
         skill: z.string().describe("The skill which the candidate is lacking"),
-        severity: z
-          .enum(["low", "medium", "high"])
-          .describe("The severity of this skill gap"),
+        severity: z.enum(["low", "medium", "high"]).describe("The severity of this skill gap"),
       }),
     )
     .describe("List of skill gaps in the candidate's profile along with their severity"),
@@ -48,7 +46,7 @@ const finalReportSchema = z.object({
   title: z.string().describe("The title of the job for which the interview report is generated"),
 });
 
-async function generateFinalReport({ resume, selfDescription, jobDescription }) {
+export async function generateFinalReport({ resume, selfDescription, jobDescription }) {
   // SYSTEM PROMPT: Give Llama a concrete JSON Skeleton Template instead of an abstract schema
   const systemPrompt = `You are a senior technical hiring manager and career coach with 15+ years of experience running interview loops across software engineering roles. You have screened thousands of resumes against job descriptions and know exactly what separates a candidate who gets an offer from one who gets rejected.
  
@@ -149,10 +147,10 @@ ${jobDescription}`;
     });
 
     const rawReport = JSON.parse(response.choices[0].message.content);
-    
+
     // Validate output using Zod schema
     const report = finalReportSchema.parse(rawReport);
-   console.log("AI Report Output:", JSON.stringify(report, null, 2));
+    console.log("AI Report Output:", JSON.stringify(report, null, 2));
     return report;
   } catch (err) {
     console.error("generateFinalReport failed:", err);
@@ -160,4 +158,85 @@ ${jobDescription}`;
   }
 }
 
-export default generateFinalReport;
+//Convert HTML content to PDF using puppeteer library
+async function generatePdfFromHtml(htmlContent) {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+  const pdfBuffer = await page.pdf({ format: "A4" });
+  await browser.close();
+  return pdfBuffer;
+}
+
+//Pdf generation of the target resume suitable for particular job description using puppeteer
+export async function generateNewResumePdf({ resume, selfDescription, jobDescription }) {
+  const newResumePdfSchema = z.object({
+    html: z.string().describe("The HTML content of the report to be converted to PDF using puppeteer library"),
+  })
+
+const prompt = `You are an expert resume writer and ATS-optimization specialist who also writes clean, print-safe HTML/CSS. Your top priorities, in order: (1) 100% ATS-parseable formatting, (2) faithfulness to the candidate's real information, (3) a polished, professional, single-page visual result.
+
+CANDIDATE INFORMATION:
+Existing Resume: ${resume}
+Self Description: ${selfDescription}
+Target Job Description: ${jobDescription}
+
+IDENTITY — NON-NEGOTIABLE:
+- Use the candidate's exact name, contact details, and actual field/profession as given in the Resume/Self Description above. NEVER substitute a different name, job title, or industry — including anything from the Job Description (that describes the role being applied for, not who the candidate is).
+- Include every contact identifier actually provided (phone, email, LinkedIn, GitHub, portfolio) on one line under the name, each shown as a complete real value (e.g. linkedin.com/in/username, github.com/username) — never a bare or truncated URL, and never omit one that was given.
+
+CONTENT RULES:
+1. You may enrich and elaborate bullet points using details actually present in the Resume or Self Description (e.g., expanding on a project's tech stack or a role's responsibilities that are mentioned but underexplained). You may NOT invent skills, achievements, employers, metrics, or experience unsupported by the Resume or Self Description, even if the Job Description calls for them — unearned claims hurt the candidate in interviews.
+2. When the Job Description asks for something the raw resume doesn't emphasize, check the Self Description for supporting evidence before including it. Prioritize and phrase existing skills/experience using the Job Description's language where it's a genuine match.
+3. Quality over quantity: 3-4 sharp, high-impact bullet points per role/project beat 6+ generic ones. Cut filler; every line should earn its place.
+4. Classify entries correctly: paid roles, internships, and job simulations (e.g. Forage) go under EXPERIENCE. Personal/academic/side projects (project name + tech stack rather than an employer) go under a separate PROJECTS section.
+5. Preserve every date exactly as given. A single source date stays a single date — never turn it into a same-month "X - X" range.
+6. Do not fabricate. Anything not supported by the Resume or Self Description stays out.
+
+PAGE-FILL & SPACING INTELLIGENCE:
+- Estimate total content volume (bullets + sections) before choosing sizes.
+- Light content (roughly under 12 total bullets): use the upper end of the ranges below — larger fonts, line-height ~1.5-1.6, generous section margins (~20-24px) — so the page reads as intentionally spacious and premium, not sparse.
+- Heavy content (12+ bullets): use the lower end — line-height ~1.3, section margins ~10-12px — to fit without shrinking past readability.
+- The page must look visually full with no large empty block at the bottom, and must never overflow to a second page.
+
+ATS-FRIENDLY FORMATTING RULES:
+- Single column only. No tables, multi-column layout, text boxes, images, or icons.
+- Section order: SUMMARY, SKILLS, EXPERIENCE, PROJECTS, EDUCATION (add a properly labeled extra section only if source content needs one, e.g. CERTIFICATIONS).
+- Heading text in the HTML should be normal Title Case; apply uppercase visually via CSS text-transform: uppercase on the heading style.
+- Left-align all body content and headings — only the name at the very top may stay centered.
+- Plain black text (#000/#111) for body copy; one accent color max (e.g. dark blue) for the name/links only.
+- No borders, outlines, or boxes around the page or any section — plain white background.
+- Standard bullet characters (•) only.
+
+HTML/CSS CONSTRAINTS (rendered offline via Puppeteer — no network access):
+- Return ONE self-contained HTML document — all CSS inline in a <style> tag in <head>, no external stylesheets or fonts
+- Web-safe fonts only: Arial, Helvetica, Georgia, or "Times New Roman"
+- @page { size: A4; margin: 12mm; } in the CSS
+- Sizes to choose from per the Page-Fill rules above: name 20-26px bold, section headings 12-14px bold with a thin bottom border, body 10-12px
+- No placeholder text — use only the real information provided
+
+OUTPUT FORMAT:
+Return ONLY a valid JSON object with a single key "html" containing the full HTML string. No markdown fences, no commentary, no text outside the JSON object.`;
+  try {
+    const response = await client.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        // system prompt to strictly enforce the JSON behavior
+        { role: "system", content: "You are an expert frontend developer. You must strictly output valid JSON." },
+        { role: "user", content: prompt },
+      ],
+      response_format: { type: "json_object" },
+    });
+
+    const rawReport = JSON.parse(response.choices[0].message.content);
+    const report = newResumePdfSchema.parse(rawReport);
+
+    const pdfBuffer = await generatePdfFromHtml(report.html);
+    return pdfBuffer;
+  } catch (err) {
+    console.error("generateNewResumePdf failed:", err);
+    throw err;
+  }
+}
+
+

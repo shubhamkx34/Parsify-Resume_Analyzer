@@ -1,7 +1,7 @@
 import express ,{ Router } from 'express'
 import {protectRoute} from "../middlewares/auth.middleware.js"
 import upload from '../middlewares/file.middleware.js'
-import {uploadData,fetchData,fetchAllData} from '../controllers/UPFE_Data.controller.js'
+import {uploadData,fetchData,fetchAllData, downloadResumePdf} from '../controllers/UPFE_Data.controller.js'
 
 
 
@@ -16,6 +16,7 @@ uploadRouter.get("/fetch/:reportId",protectRoute,fetchData)
 //Api to fetch all the reports of a specific user
 uploadRouter.get("/fetch",protectRoute,fetchAllData)
 
+uploadRouter.post("/resume/pdf/:reportId",protectRoute,downloadResumePdf  )
 
 
 export default uploadRouter

@@ -1,7 +1,6 @@
 import finalReportModel from "../models/finalReportModel.js";
-import generateFinalReport from "../services/ai.service.js";
+import { generateFinalReport, generateNewResumePdf } from "../services/ai.service.js";
 import { createRequire } from "module"; //pdf-parse does not support standard import syntax in modern Node.js.
-
 
 const require = createRequire(import.meta.url);
 const pdfparse = require("pdf-parse");
@@ -34,35 +33,53 @@ export async function uploadData(req, res) {
 
 //Controller to fetch finalReport using reportId of a logged in user
 export async function fetchData(req, res) {
-
   //req.params captures the reportId from the URL parameters of the incoming request. This is typically used to identify which specific report the user wants to retrieve.
-  const { reportId } = req.params; 
+  const { reportId } = req.params;
   const report = await finalReportModel.findOne({ _id: reportId, user: req.user.id });
 
-  if(!report){
+  if (!report) {
     return res.status(404).json({
-      message : "Report Missing!!!"
-    })
+      message: "Report Missing!!!",
+    });
   }
 
   res.status(200).json({
-    message:"Report fetched successfully!",
-    report
-  })
+    message: "Report fetched successfully!",
+    report,
+  });
 }
 
 //Controller to fetch all the reports of a specific user
-export async function fetchAllData(req,res){
-const reports = await finalReportModel.find({user:req.user.id}).sort({createdAt:-1}).select("-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan ")
-//({createdAt:-1})->Sorts the reports in descending order of creation time
+export async function fetchAllData(req, res) {
+  const reports = await finalReportModel
+    .find({ user: req.user.id })
+    .sort({ createdAt: -1 })
+    .select("-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan ");
+  //({createdAt:-1})->Sorts the reports in descending order of creation time
 
-  if(!reports){
+  if (!reports) {
     return res.status(404).json({
-      message : "Reports are Missing!!!"
-    })
+      message: "Reports are Missing!!!",
+    });
   }
-res.status(200).json({
-    message:"Reports fetched successfully!",
-    reports
+  res.status(200).json({
+    message: "Reports fetched successfully!",
+    reports,
+  });
+}
+
+export async function downloadResumePdf(req, res) {
+  const { reportId } = req.params;
+  const report = await finalReportModel.findById(reportId);
+
+  if (!report) {
+    return res.status(404).json({ message: "Report not found" });
+  }
+  const {resume,selfDescription,jobDescription} = report;
+  const pdfBuffer = await generateNewResumePdf({ resume, selfDescription, jobDescription });
+res.set({
+  "content-Type": "application/pdf",
+  "content-Disposition": `attachment; filename=resume_${reportId}.pdf`,
 })
+  res.send(pdfBuffer);  
 }
