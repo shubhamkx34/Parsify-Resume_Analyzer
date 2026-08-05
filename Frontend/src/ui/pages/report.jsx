@@ -4,15 +4,16 @@ import { RiArrowLeftCircleFill } from "@remixicon/react";
 import { useNavigate, useParams } from "react-router";
 import { useReport } from "../hooks/useUPFE_Data.js";
 import { Atom } from "react-loading-indicators";
+import SpecularButton from "../components/spectecularButton.jsx";
 
 const Report = () => {
   const navigate = useNavigate();
-  
+
   // 1. Grab the report ID from the URL (e.g., /report/12345)
-  const { reportId } = useParams(); 
-  
+  const { reportId } = useParams();
+
   // 2. Bring in your custom hook to fetch the data
-  const { getReportById } = useReport();
+  const { getReportById, getResumePdf, loading } = useReport();
 
   // 3. State to hold our fetched data and loading status
   const [reportData, setReportData] = useState(null);
@@ -32,7 +33,7 @@ const Report = () => {
       setReportData(data);
       setIsFetching(false);
     };
-    
+
     fetchMyReport();
   }, [reportId]); // This runs once when the component mounts
 
@@ -44,7 +45,7 @@ const Report = () => {
     setIsLoaded(true);
 
     // Get the real score from the AI data, default to 0 if missing
-    const targetScore = reportData?.matchScore || 0; 
+    const targetScore = reportData?.matchScore || 0;
     const duration = 4500;
     const frameRate = 60;
     const totalFrames = Math.round(duration / (1000 / frameRate));
@@ -71,7 +72,7 @@ const Report = () => {
   }, [reportData]); // This effect depends on reportData arriving
 
   // A simple helper function to color-code skill gaps based on AI severity
-  const getSeverityColor = (severity) => {
+  const getSeverityColor = severity => {
     if (severity === "high") return "bg-red-500";
     if (severity === "medium") return "bg-orange-500";
     return "bg-yellow-500";
@@ -90,6 +91,15 @@ const Report = () => {
   // 7. Render the real page once data is available
   return (
     <div className="min-h-screen flex flex-col relative bg-[#0a0a0a] text-white font-sans">
+      
+      {/* --- AI PROCESSING OVERLAY --- */}
+      {loading && (
+        <div className="fixed inset-0 z-[100] flex flex-col justify-center items-center bg-black/80 backdrop-blur-sm text-white transition-opacity duration-300">
+          <Atom color="#1b86bf" size="large" text="" textColor="#ffffff" />
+          <p className="mt-6 text-xl font-semibold animate-pulse font-[font2] tracking-wide">Generating Your Resume...</p>
+        </div>
+      )}
+
       {/* Background decoration */}
       <div className="fixed inset-0 z-0 bg-[radial-gradient(circle_at_15%_50%,rgba(255,255,255,0.02)_0%,transparent_50%),radial-gradient(circle_at_85%_30%,rgba(255,255,255,0.03)_0%,transparent_50%)] pointer-events-none"></div>
 
@@ -115,7 +125,6 @@ const Report = () => {
 
       {/* Main Layout Grid */}
       <main className="flex-grow flex flex-col lg:flex-row w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-12 py-8 gap-8 z-10">
-        
         {/* Left Sidebar - Navigation Menu */}
         <aside className="w-full lg:w-64 flex-shrink-0 ">
           <button onClick={() => navigate(-1)} className="mb-10 text-white hover:text-gray-400 transition-colors">
@@ -150,19 +159,43 @@ const Report = () => {
               >
                 Learning Roadmap
               </button>
+              <div className="mt-80 ">
+                <SpecularButton
+                  className=""
+                  size="lg"
+                  radius={19}
+                  tint="#ffffff"
+                  tintOpacity={0}
+                  blur={0}
+                  textColor="#f5f5f5"
+                  lineColor="#ffffff"
+                  baseColor="#525252"
+                  intensity={1}
+                  shineSize={15}
+                  shineFade={40}
+                  thickness={1}
+                  speed={0.35}
+                  followMouse
+                  proximity={250}
+                  autoAnimate={false}
+                  onClick={() => {
+                    getResumePdf(reportId);
+                  }}
+                >
+                  Generate Ai Resume
+                </SpecularButton>
+              </div>
             </nav>
           </div>
         </aside>
 
         {/* Center Section - Dynamic Content */}
         <section className="flex-grow min-w-0 flex flex-col gap-6">
-          
           {/* 1. TECHNICAL QUESTIONS */}
           {activeTab === "technical" && (
             <div className="bg-[#171717] bg-opacity-80 backdrop-blur-md rounded-2xl p-6 lg:p-8 shadow-sm border border-white/5">
               <h2 className="text-2xl font-semibold mb-6 text-white">Technical Questions</h2>
               <div className="space-y-6">
-                
                 {/* Dynamically map over AI technical questions */}
                 {reportData?.technicalQuestions?.map((item, index) => (
                   <div key={index} className="border border-white/10 bg-white/5 rounded-xl p-5 transition-all hover:border-white/20">
@@ -188,7 +221,6 @@ const Report = () => {
                     </div>
                   </div>
                 ))}
-
               </div>
             </div>
           )}
@@ -198,7 +230,6 @@ const Report = () => {
             <div className="bg-[#171717] bg-opacity-80 backdrop-blur-md rounded-2xl p-6 lg:p-8 shadow-sm border border-white/5">
               <h2 className="text-2xl font-semibold mb-6 text-white">Behavioral Questions</h2>
               <div className="space-y-6">
-                
                 {/* Dynamically map over AI behavioral questions */}
                 {reportData?.behavioralQuestions?.map((item, index) => (
                   <div key={index} className="border border-white/10 bg-white/5 rounded-xl p-5 transition-all hover:border-white/20">
@@ -224,7 +255,6 @@ const Report = () => {
                     </div>
                   </div>
                 ))}
-
               </div>
             </div>
           )}
@@ -234,7 +264,6 @@ const Report = () => {
             <div className="bg-[#171717] bg-opacity-80 backdrop-blur-md rounded-2xl p-6 lg:p-8 shadow-sm border border-white/5">
               <h2 className="text-2xl font-semibold mb-6 text-white">Learning Roadmap</h2>
               <div className="space-y-6">
-                
                 {/* Dynamically map over AI preparation plan */}
                 {reportData?.preparationPlan?.map((plan, index) => (
                   <div key={index} className="border-l-2 border-white/20 pl-4 py-2 relative">
@@ -253,7 +282,6 @@ const Report = () => {
                     </ul>
                   </div>
                 ))}
-
               </div>
             </div>
           )}
@@ -261,15 +289,27 @@ const Report = () => {
 
         {/* Right Sidebar - Stats & Gaps */}
         <aside className="w-full lg:w-80 flex-shrink-0 flex flex-col gap-6">
-          
           {/* Overall Match Widget */}
-          <div className={`bg-[#171717] bg-opacity-80 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-white/10 text-center transition-all duration-[800ms] ease-out transform ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+          <div
+            className={`bg-[#171717] bg-opacity-80 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-white/10 text-center transition-all duration-[800ms] ease-out transform ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
+          >
             <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-2">Overall Match</h3>
-            
+
             <svg className="block mx-auto max-w-[80%] max-h-[200px] my-4" viewBox="0 0 36 36">
-              <path className="fill-none stroke-white/10 stroke-[2.5]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <path className="fill-none stroke-white stroke-[2.5] rounded-full transition-all duration-75" strokeLinecap="round" strokeDasharray={`${score}, 100`} style={{ filter: "drop-shadow(0 0 4px rgba(255, 255, 255, 0.5))" }} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <text className="fill-white font-bold text-[8px]" textAnchor="middle" x="18" y="20.35">{score}%</text>
+              <path
+                className="fill-none stroke-white/10 stroke-[2.5]"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path
+                className="fill-none stroke-white stroke-[2.5] rounded-full transition-all duration-75"
+                strokeLinecap="round"
+                strokeDasharray={`${score}, 100`}
+                style={{ filter: "drop-shadow(0 0 4px rgba(255, 255, 255, 0.5))" }}
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <text className="fill-white font-bold text-[8px]" textAnchor="middle" x="18" y="20.35">
+                {score}%
+              </text>
             </svg>
 
             <p className="text-sm text-gray-300 mt-2">
@@ -283,7 +323,7 @@ const Report = () => {
               <span className="material-symbols-outlined text-orange-500">warning</span>
               <h3 className="font-semibold text-white">Identified Skill Gaps</h3>
             </div>
-            
+
             <ul className="space-y-4">
               {/* Dynamically map over AI skill gaps */}
               {reportData?.skillGaps?.map((gap, index) => (
@@ -297,11 +337,10 @@ const Report = () => {
               ))}
             </ul>
           </div>
-
         </aside>
       </main>
     </div>
   );
 };
 
-export default Report;  
+export default Report;

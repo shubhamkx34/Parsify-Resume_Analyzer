@@ -64,9 +64,9 @@ const Home = () => {
                 onChange={e => {
                   setjobDescription(e.target.value);
                 }}
-                className="h-[35vh] w-[70vh] p-6 text-center font-[font1] mt-3 overflow-y-auto text-slate-100 font-semibold rounded-2xl placeholder-gray-300 focus:outline-none border border-slate-800 resize-none focus:ring-2 focus:border-slate-400 focus:ring-slate-400/20 transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md"
+                className="h-[35vh] w-[70vh] p-6 text-center font-[font1] mt-3 overflow-y-auto text-slate-100 font-semibold rounded-2xl placeholder-gray-300 focus:outline-none border border-slate-800 resize-none focus:ring-2 focus:border-slate-400 focus:ring-slate-400/20 transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md focus-within:placeholder-transparent"
                 type="text"
-                placeholder="Paste the job requirements, responsibilities, and tech stack here..."
+                placeholder ="Paste the job requirements, responsibilities, and tech stack here..."
               />
             </div>
 
@@ -79,7 +79,7 @@ const Home = () => {
                 onChange={e => {
                   setselfDescription(e.target.value);
                 }}
-                className="p-6 placeholder-gray-300 h-[35vh] w-[70vh] text-center mt-3 font-[font1] overflow-y-auto text-slate-100 font-semibold rounded-2xl focus:outline-none border border-slate-800 resize-none focus:border-slate-400 focus:ring-slate-400/20 focus:ring-2 transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md "
+                className="p-6 placeholder-gray-300 h-[35vh] w-[70vh] text-center mt-3 font-[font1] overflow-y-auto text-slate-100 font-semibold rounded-2xl focus:outline-none border border-slate-800 resize-none focus:border-slate-400 focus:ring-slate-400/20 focus:ring-2 transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md focus-within:placeholder-transparent"
                 type="text"
                 placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
               />
@@ -149,7 +149,7 @@ const Home = () => {
         {reports?.length > 0 && (
           <div className="flex flex-col w-screen  items-center justify-center mt-12 mb-16">
             <h2 className="text-2xl font-bold font-[font2] tracking-wide mb-6">My Recent Interview Plans</h2>
-            <div className="flex flex-col border-y border-gray-700 py-5 w-[40vw] backdrop-blur-md text-center   gap-4 ">
+            <div className="flex flex-col border-y border-gray-700 py-5 w-[55vw] backdrop-blur-md text-center   gap-4 ">
               {reports.map(report => (
                 <div
                   key={report._id}

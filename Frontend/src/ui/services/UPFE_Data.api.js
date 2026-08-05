@@ -23,17 +23,28 @@ export async function fetchData(reportId) {
   const response = await axios.get(`http://localhost:3000/api/fetch/${reportId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
-    }
-  })
+    },
+  });
   return response.data;
 }
 
 export async function fetchAllData() {
-    const token = localStorage.getItem("token"); // Grab token
+  const token = localStorage.getItem("token"); // Grab token
   const response = await axios.get("http://localhost:3000/api/fetch", {
     headers: {
       Authorization: `Bearer ${token}`,
-    }
-  })
+    },
+  });
+  return response.data;
+}
+
+export async function downloadResumePdf(reportId) {
+  const token = localStorage.getItem("token"); // Grab token
+  const response = await axios.post(`http://localhost:3000/api/resume/pdf/${reportId}`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: "blob", // Important for handling binary data
+  });
   return response.data;
 }
