@@ -38,7 +38,7 @@ export async function logout() {
 // Accept accessToken here
 export async function getUser(accessToken) {
   try {
-    const response = await axios.get("http://localhost:3000/api/auth/get-user", {
+    const response = await axios.get(`${BASE_URL}/api/auth/get-user`, {
       // 1. Manually attach the access token header!
       headers: {
         Authorization: `Bearer ${accessToken}`,

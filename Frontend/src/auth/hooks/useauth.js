@@ -31,7 +31,7 @@ export const useauth = () => {
     };
 
     getAndSetUser();
-  }, [token, user, setUser, setLoading]);
+  }, [token, setUser, setLoading]);
 
   const handleRegister = async ({ username, email, password }) => {
     setLoading(true);
