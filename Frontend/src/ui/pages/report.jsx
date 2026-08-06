@@ -5,24 +5,24 @@ import { useNavigate, useParams } from "react-router";
 import { useReport } from "../hooks/useUPFE_Data.js";
 import { Atom } from "react-loading-indicators";
 import SpecularButton from "../components/spectecularButton.jsx";
+import { useauth } from "../../auth/hooks/useauth.js";
 
 const Report = () => {
   const navigate = useNavigate();
-
   // 1. Grab the report ID from the URL (e.g., /report/12345)
   const { reportId } = useParams();
-
   // 2. Bring in your custom hook to fetch the data
   const { getReportById, getResumePdf, loading } = useReport();
-
   // 3. State to hold our fetched data and loading status
   const [reportData, setReportData] = useState(null);
   const [isFetching, setIsFetching] = useState(true);
-
   // Tab and Animation states
   const [activeTab, setActiveTab] = useState("technical");
   const [score, setScore] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const { handleLogout } = useauth();
+  const [error, setError] = useState("");
+  
 
   // 4. Fetch the data as soon as the page loads
   useEffect(() => {
@@ -33,9 +33,19 @@ const Report = () => {
       setReportData(data);
       setIsFetching(false);
     };
-
     fetchMyReport();
   }, [reportId]); // This runs once when the component mounts
+
+  //Logout button feature
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const result = await handleLogout();
+    if (result.success) {
+      navigate("/login");
+    } else {
+      setError(result.message);
+    }
+  };
 
   // 5. Score Animation Logic
   useEffect(() => {
@@ -81,9 +91,11 @@ const Report = () => {
   // 6. Show a loading spinner while waiting for the backend
   if (isFetching) {
     return (
-      <div className="h-screen w-screen bg-gray-950 flex flex-col justify-center items-center text-white">
-        <Atom color="#1b86bf" size="medium" text="" textColor="#ffffff" />
-        <p className="mt-4 text-gray-400">Loading your AI Report...</p>
+      <div className="min-h-screen flex flex-col relative bg-[#0a0a0a] text-white font-sans">
+        <div className="fixed inset-0 z-[100] flex flex-col justify-center items-center bg-black/80 backdrop-blur-sm text-white transition-opacity duration-300">
+          <Atom color="#1b86bf" size="large" text="" textColor="#ffffff" />
+          <p className="mt-6 text-xl font-semibold animate-pulse font-[font2] tracking-wide">Loading your AI Report...</p>
+        </div>
       </div>
     );
   }
@@ -91,7 +103,6 @@ const Report = () => {
   // 7. Render the real page once data is available
   return (
     <div className="min-h-screen flex flex-col relative bg-[#0a0a0a] text-white font-sans">
-      
       {/* --- AI PROCESSING OVERLAY --- */}
       {loading && (
         <div className="fixed inset-0 z-[100] flex flex-col justify-center items-center bg-black/80 backdrop-blur-sm text-white transition-opacity duration-300">
@@ -118,7 +129,10 @@ const Report = () => {
           pauseOnHover={false}
           disabled={false}
         />
-        <button className="cursor-pointer mr-20 mt-4 mb-3 font-semibold px-6 active:scale-95 hover:bg-white/75 bg-white text-black font-[font1] rounded-xl">
+        <button
+          onClick={handleSubmit}
+          className="cursor-pointer mr-20 mt-4 mb-3 font-semibold px-6 active:scale-95 hover:bg-white/75 bg-white text-black font-[font1] rounded-xl"
+        >
           Logout
         </button>
       </header>

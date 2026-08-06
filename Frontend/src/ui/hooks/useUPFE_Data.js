@@ -10,8 +10,6 @@ export const useReport = () => {
   const ensureMinDelay = async (startTime) => {
     const elapsedTime = Date.now() - startTime;
     const minLoadTime = 2000; 
-
-
     if (elapsedTime < minLoadTime) {
       // Pause execution for whatever time is left to reach 2 seconds
       await new Promise((resolve) => setTimeout(resolve, minLoadTime - elapsedTime));

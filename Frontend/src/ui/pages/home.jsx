@@ -4,23 +4,31 @@ import Beams from "../components/beam.jsx";
 import { RiSuitcaseLine, RiProfileLine } from "@remixicon/react";
 import { useReport } from "../hooks/useUPFE_Data.js";
 import { useState, useRef, useEffect } from "react";
-// Imported from react-router-dom to prevent routing crashes
-import { useNavigate } from "react-router";
+// 1. Import useLocation to read the hidden flag
+import { useNavigate, useLocation } from "react-router";
 import { Atom } from "react-loading-indicators";
+import { useauth } from "../../auth/hooks/useauth.js";
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Destructured 'reports' from the custom hook
-  const { loading, generateReport, getAllReport, reports } = useReport();
+  const { generateReport, getAllReport, reports } = useReport();
   const [selfDescription, setselfDescription] = useState("");
   const [jobDescription, setjobDescription] = useState("");
-
+  const [isFetching, setIsFetching] = useState(true);
   const resumeInputRef = useRef();
+  const { handleLogout } = useauth();
+  const [error, setError] = useState("");
 
-  // Automatically fetch the recent reports when the page loads
   useEffect(() => {
-    getAllReport();
+    const fetchInitialData = async () => {
+       setIsFetching(true);
+       await getAllReport();
+       setIsFetching(false); 
+    };
+    
+    fetchInitialData();
   }, []);
 
   const handleGenerateReport = async e => {
@@ -36,23 +44,49 @@ const Home = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="h-screen w-screen bg-gray-950 flex justify-center items-center">
-        <Atom color="#1b86bf" size="medium" text="" textColor="#ffffff" />
-      </div>
-    );
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const result = await handleLogout();
+    if (result.success) {
+      navigate("/login");
+    } else {
+      setError(result.message); 
+    }
+  };
+
+  // 2. Check if we just arrived here directly from the login page
+  const fromLogin = location.state?.fromLogin;
+
+  // 3. ONLY show the loading screen if we are fetching AND we didn't just log in
+  // We also changed the text so it makes sense if a user manually refreshes the Home page
+  if (isFetching && !fromLogin) {
+      return (
+        <div className="h-screen w-screen bg-gray-950 flex flex-col justify-center items-center text-white">
+          <Atom color="#1b86bf" size="medium" text="" textColor="#ffffff" />
+          <p className="mt-4 text-gray-400">Loading Dashboard...</p>
+        </div>
+      );
   }
 
   return (
-    // Changed h-screen to min-h-screen and allowed vertical scrolling so the list is visible
     <div className="min-h-screen relative z-0 overflow-x-hidden overflow-y-auto w-screen text-white bg-gray-950 pb-20">
       <div style={{ width: "100%", height: "100%", position: "fixed", top: 0, left: 0, zIndex: -1 }}>
         <Beams beamWidth={3.2} beamHeight={30} beamNumber={20} lightColor="#ffffff" speed={2} noiseIntensity={1.75} scale={0.2} rotation={30} />
       </div>
 
       <div className="main relative z-50">
-        <Navbar />
+        <div className="nav mr-35">
+          <Navbar />
+        </div>
+        <div className="logout ml-[91vw] -mt-[7.6vh]">
+          <button
+            onClick={handleSubmit}
+            className="bg-white cursor-pointer py-2 px-5  active:scale-95 text-black font-[font1] rounded-2xl"
+          >
+            Logout
+          </button>
+        </div>
+
         <form className="mb-20">
           <div className="flex justify-between pt-16 px-32 ">
             <div className="jobD flex flex-col ">
@@ -61,12 +95,10 @@ const Home = () => {
                 <span>Target Job Description :</span>
               </label>
               <textarea
-                onChange={e => {
-                  setjobDescription(e.target.value);
-                }}
+                onChange={e => setjobDescription(e.target.value)}
                 className="h-[35vh] w-[70vh] p-6 text-center font-[font1] mt-3 overflow-y-auto text-slate-100 font-semibold rounded-2xl placeholder-gray-300 focus:outline-none border border-slate-800 resize-none focus:ring-2 focus:border-slate-400 focus:ring-slate-400/20 transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md focus-within:placeholder-transparent"
                 type="text"
-                placeholder ="Paste the job requirements, responsibilities, and tech stack here..."
+                placeholder="Paste the job requirements, responsibilities, and tech stack here..."
               />
             </div>
 
@@ -76,9 +108,7 @@ const Home = () => {
                 <span className="border text-sm mr-2 ml-2 rounded py-2 font-[font2] px-3 backdrop-blur-2xl">Optional</span>:
               </label>
               <textarea
-                onChange={e => {
-                  setselfDescription(e.target.value);
-                }}
+                onChange={e => setselfDescription(e.target.value)}
                 className="p-6 placeholder-gray-300 h-[35vh] w-[70vh] text-center mt-3 font-[font1] overflow-y-auto text-slate-100 font-semibold rounded-2xl focus:outline-none border border-slate-800 resize-none focus:border-slate-400 focus:ring-slate-400/20 focus:ring-2 transition-all [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent focus:backdrop-blur-md focus-within:placeholder-transparent"
                 type="text"
                 placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
@@ -120,7 +150,7 @@ const Home = () => {
               </label>
             </div>
           </div>
-
+          {error && <p className="text-red-500 text-center font-bold">{error}</p>}
           <SpecularButton
             className="ml-[43vw] mt-8"
             size="lg"
@@ -145,7 +175,6 @@ const Home = () => {
           </SpecularButton>
         </form>
 
-        {/* Recent Reports Section mapped directly from the UI mockup */}
         {reports?.length > 0 && (
           <div className="flex flex-col w-screen  items-center justify-center mt-12 mb-16">
             <h2 className="text-2xl font-bold font-[font2] tracking-wide mb-6">My Recent Interview Plans</h2>

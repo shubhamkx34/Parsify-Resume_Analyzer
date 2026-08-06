@@ -1,37 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import CursorGrid from "../../ui/components/CursorGrid";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useauth } from "../hooks/useauth";
-import { useState } from "react";
 import { Atom } from "react-loading-indicators";
-import { useNavigate } from "react-router";
 
 const Login = () => {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { loading, handleLogin } = useauth();
-
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //handleLogin is a delivery messenger: its job is to take the email and password variables you just captured, carry them over the internet to your backend server, and wait for the server to reply.
+  // 1. A new lock to keep the loading screen active during the page transition
+  const [isNavigating, setIsNavigating] = useState(false);
+
   const handleSubmit = async e => {
     e.preventDefault();
     setError("");
-    // Save the result returned by useauth.js
+    
     const result = await handleLogin({ email, password });
+    
     if (result.success) {
-      Navigate("/"); // Only go to home page if login succeeded!
+      // 2. Lock the loading screen ON so the form doesn't flash back
+      setIsNavigating(true); 
+      // 3. Navigate to Home, and pass a hidden flag saying we just logged in
+      navigate("/", { state: { fromLogin: true } }); 
     } else {
-      setError(result.message); // If it failed, save the backend error text
+      setError(result.message); 
     }
   };
 
-  if (loading) {
+  // 4. Show this loading screen if the API is running OR if we are changing pages
+  if (loading || isNavigating) {
     return (
       <div className="h-screen w-screen bg-gray-950 flex justify-center items-center">
-        <Atom color="#1b86bf" size="medium" text="" textColor="#ffffff" />
+        <Atom color="#1b86bf" size="medium" text="Logging in..." textColor="#ffffff" />
       </div>
     );
   }
@@ -48,9 +52,7 @@ const Login = () => {
         <div className="email flex flex-col">
           <label htmlFor="email">Email : </label>
           <input
-            onChange={e => {
-              setEmail(e.target.value);
-            }}
+            onChange={e => setEmail(e.target.value)}
             type="email"
             className="bg-white text-black text-center rounded-br-lg rounded-bl-lg  h-10 w-80"
             placeholder="Enter Email Address"
@@ -60,9 +62,7 @@ const Login = () => {
         <div className="pass flex flex-col  ">
           <label htmlFor="password">Password : </label>
           <input
-            onChange={e => {
-              setPassword(e.target.value);
-            }}
+            onChange={e => setPassword(e.target.value)}
             type="password"
             className="bg-white text-black text-center rounded-br-lg rounded-bl-lg  h-10 w-80"
             placeholder="Enter Password"

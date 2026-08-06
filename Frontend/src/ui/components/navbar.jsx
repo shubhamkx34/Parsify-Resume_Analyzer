@@ -16,14 +16,14 @@ const navbar = () => {
   pauseOnHover={false}
   disabled={false}
 />
-      <div className="links text-xl  font-[font1] mt-4 mr-13  ">
+      <div className="links text-xl  font-[font1] mt-4 mr-35  ">
         <Link className="pr-10" to="/feature">
           Features
         </Link>
         <Link className="pr-10" to="/working">
           How It Works
         </Link>
-        <button className="cursor-pointer py-2 px-5 active:scale-95 bg-white text-black font-[font1] rounded-2xl">Logout</button>
+       
       </div>
     </div>
   );
