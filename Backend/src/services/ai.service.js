@@ -165,9 +165,16 @@ ${jobDescription}`;
 
 //Convert HTML content to PDF using puppeteer library
 async function generatePdfFromHtml(htmlContent) {
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage"
+    ]
+  });
   const page = await browser.newPage()
-  await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+  await page.setContent(htmlContent, { waitUntil: "domcontentloaded" });
   const pdfBuffer = await page.pdf({
     format: "A4",
     margin: {

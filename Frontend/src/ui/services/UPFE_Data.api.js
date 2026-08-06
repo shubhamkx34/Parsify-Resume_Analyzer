@@ -10,7 +10,8 @@ export async function uploadData({ resume, selfDescription, jobDescription }) {
 
   const token = localStorage.getItem("token");
 
-  const response = await axios.post("`${BASE_URL}/api/upload`", formData, {
+  const response = await axios.post(`${BASE_URL}/api/upload`, formData, {
+    withCredentials: true,
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
@@ -22,6 +23,7 @@ export async function uploadData({ resume, selfDescription, jobDescription }) {
 export async function fetchData(reportId) {
   const token = localStorage.getItem("token"); // Grab token
   const response = await axios.get(`${BASE_URL}/api/fetch/${reportId}`, {
+    withCredentials: true,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -32,6 +34,7 @@ export async function fetchData(reportId) {
 export async function fetchAllData() {
   const token = localStorage.getItem("token"); // Grab token
   const response = await axios.get(`${BASE_URL}/api/fetch`, {
+    withCredentials: true,
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -42,6 +45,7 @@ export async function fetchAllData() {
 export async function downloadResumePdf(reportId) {
   const token = localStorage.getItem("token"); // Grab token
   const response = await axios.post(`${BASE_URL}/api/resume/pdf/${reportId}`, null, {
+    withCredentials: true,
     headers: {
       Authorization: `Bearer ${token}`,
     },

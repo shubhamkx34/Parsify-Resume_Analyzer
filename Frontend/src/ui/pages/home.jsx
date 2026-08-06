@@ -17,17 +17,18 @@ const Home = () => {
   const [selfDescription, setselfDescription] = useState("");
   const [jobDescription, setjobDescription] = useState("");
   const [isFetching, setIsFetching] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
   const resumeInputRef = useRef();
   const { handleLogout } = useauth();
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchInitialData = async () => {
-       setIsFetching(true);
-       await getAllReport();
-       setIsFetching(false); 
+      setIsFetching(true);
+      await getAllReport();
+      setIsFetching(false);
     };
-    
+
     fetchInitialData();
   }, []);
 
@@ -38,19 +39,31 @@ const Home = () => {
       alert("Please upload a resume first!");
       return;
     }
-    const data = await generateReport({ resume, selfDescription, jobDescription });
-    if (data && data._id) {
-      navigate(`/report/${data._id}`);
+    // 1. Turn on the loading screen instantly
+    setIsGenerating(true);
+    try {
+      // 2. Wait for the backend to finish
+      const data = await generateReport({ resume, selfDescription, jobDescription });
+      if (data && data._id) {
+        navigate(`/report/${data._id}`);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to generate report.");
+    } finally {
+      // 3. Turn off the loading screen if it fails (navigation handles success)
+      setIsGenerating(false);
     }
   };
 
+  //Logout 
   const handleSubmit = async e => {
     e.preventDefault();
     const result = await handleLogout();
     if (result.success) {
       navigate("/login");
     } else {
-      setError(result.message); 
+      setError(result.message);
     }
   };
 
@@ -60,16 +73,24 @@ const Home = () => {
   // 3. ONLY show the loading screen if we are fetching AND we didn't just log in
   // We also changed the text so it makes sense if a user manually refreshes the Home page
   if (isFetching && !fromLogin) {
-      return (
-        <div className="h-screen w-screen bg-gray-950 flex flex-col justify-center items-center text-white">
-          <Atom color="#1b86bf" size="medium" text="" textColor="#ffffff" />
-          <p className="mt-4 text-gray-400">Loading Dashboard...</p>
-        </div>
-      );
+    return (
+      <div className="h-screen w-screen bg-gray-950 flex flex-col justify-center items-center text-white">
+        <Atom color="#1b86bf" size="medium" text="" textColor="#ffffff" />
+        <p className="mt-4 text-gray-400">Loading Dashboard...</p>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen relative z-0 overflow-x-hidden overflow-y-auto w-screen text-white bg-gray-950 pb-20">
+    
+      {isGenerating && (
+        <div className="fixed inset-0 z-[100] flex flex-col justify-center items-center bg-black/80 backdrop-blur-sm text-white transition-opacity duration-300">
+          <Atom color="#1b86bf" size="large" text="" textColor="#ffffff" />
+          <p className="mt-6 text-xl font-semibold animate-pulse font-[font2] tracking-wide">Analyzing Resume & Generating Report...</p>
+        </div>
+      )}
+
       <div style={{ width: "100%", height: "100%", position: "fixed", top: 0, left: 0, zIndex: -1 }}>
         <Beams beamWidth={3.2} beamHeight={30} beamNumber={20} lightColor="#ffffff" speed={2} noiseIntensity={1.75} scale={0.2} rotation={30} />
       </div>
@@ -79,10 +100,7 @@ const Home = () => {
           <Navbar />
         </div>
         <div className="logout ml-[91vw] -mt-[7.6vh]">
-          <button
-            onClick={handleSubmit}
-            className="bg-white cursor-pointer py-2 px-5  active:scale-95 text-black font-[font1] rounded-2xl"
-          >
+          <button onClick={handleSubmit} className="bg-white cursor-pointer py-2 px-5  active:scale-95 text-black font-[font1] rounded-2xl">
             Logout
           </button>
         </div>
@@ -186,7 +204,7 @@ const Home = () => {
                   onClick={() => navigate(`/report/${report._id}`)}
                 >
                   <h3 className="text-lg font-bold">{report.title || "Untitled Position"}</h3>
-                  <h3>  Match Score - {report.matchScore}%</h3>
+                  <h3> Match Score - {report.matchScore}%</h3>
                   <p className="text-sm text-gray-400 font-[font1]">Generated on {new Date(report.createdAt).toLocaleDateString()}</p>
                 </div>
               ))}
