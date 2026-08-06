@@ -1,4 +1,5 @@
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export async function uploadData({ resume, selfDescription, jobDescription }) {
   //to send file from frontend to backend, formdata is used
@@ -9,7 +10,7 @@ export async function uploadData({ resume, selfDescription, jobDescription }) {
 
   const token = localStorage.getItem("token");
 
-  const response = await axios.post("http://localhost:3000/api/upload", formData, {
+  const response = await axios.post("`${BASE_URL}/api/upload`", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
@@ -20,7 +21,7 @@ export async function uploadData({ resume, selfDescription, jobDescription }) {
 
 export async function fetchData(reportId) {
   const token = localStorage.getItem("token"); // Grab token
-  const response = await axios.get(`http://localhost:3000/api/fetch/${reportId}`, {
+  const response = await axios.get(`${BASE_URL}/api/fetch/${reportId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -30,7 +31,7 @@ export async function fetchData(reportId) {
 
 export async function fetchAllData() {
   const token = localStorage.getItem("token"); // Grab token
-  const response = await axios.get("http://localhost:3000/api/fetch", {
+  const response = await axios.get(`${BASE_URL}/api/fetch`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -40,7 +41,7 @@ export async function fetchAllData() {
 
 export async function downloadResumePdf(reportId) {
   const token = localStorage.getItem("token"); // Grab token
-  const response = await axios.post(`http://localhost:3000/api/resume/pdf/${reportId}`, null, {
+  const response = await axios.post(`${BASE_URL}/api/resume/pdf/${reportId}`, null, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

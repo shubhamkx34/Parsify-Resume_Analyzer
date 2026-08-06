@@ -6,6 +6,7 @@ import connectToDB from "./src/config/db.js";
 
 connectToDB()
 
-app.listen(3000,()=>{
-    console.log("Server Live!!!")
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server Live on port ${PORT}!!!`);
+});
