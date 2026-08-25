@@ -14,7 +14,7 @@ const Working = () => {
         }}
         className="absolute top-6 left-6 z-50 p-2 cursor-pointer text-white hover:text-gray-400 transition-colors"
       >
-        <RiArrowLeftCircleFill size={60} />
+        <RiArrowLeftCircleFill size={50} />
       </button>
 
       <div style={{ width: "100%", height: "100%", position: "absolute" }}>

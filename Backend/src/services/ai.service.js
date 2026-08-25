@@ -65,7 +65,7 @@ Score 0-100 based on: (1) overlap between the candidate's demonstrated skills/te
 Do not use a fixed count. Base it on how much ground needs covering:
 - Strong match (matchScore 80+): 4-6 technical, 3-4 behavioral — go deeper, less breadth.
 - Moderate match (50-79): 6-9 technical, 4-6 behavioral — confirm strengths and probe gaps.
-- Weak match (below 50): 8-12 technical, 4-6 behavioral — cover fundamentals thoroughly.
+- Weak match (below 50): 8-10 technical, 4-6 behavioral — cover fundamentals thoroughly.
 Never go below 4 or above 12 in either category.
  
 ## QUESTION QUALITY
@@ -143,12 +143,14 @@ ${jobDescription}`;
 
   try {
     const response = await client.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "openai/gpt-oss-120b", 
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
       response_format: { type: "json_object" },
+      reasoning_format: "hidden",
+      max_completion_tokens: 4500
     });
 
     const rawReport = JSON.parse(response.choices[0].message.content);

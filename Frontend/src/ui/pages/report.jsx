@@ -142,7 +142,7 @@ const Report = () => {
         {/* Left Sidebar - Navigation Menu */}
         <aside className="w-full lg:w-64 flex-shrink-0 ">
           <button onClick={() => navigate(-1)} className="mb-10 text-white hover:text-gray-400 transition-colors">
-            <RiArrowLeftCircleFill size={55} />
+            <RiArrowLeftCircleFill size={50} />
           </button>
 
           <div className="flex flex-col gap-2 mt-4 lg:mt-auto lg:mb-auto">
@@ -215,9 +215,7 @@ const Report = () => {
                   <div key={index} className="border border-white/10 bg-white/5 rounded-xl p-5 transition-all hover:border-white/20">
                     <div className="flex justify-between items-start mb-3">
                       <h3 className="text-lg font-medium text-white">{item.question}</h3>
-                      <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-blue-900/30 text-blue-300 border border-blue-800/50">
-                        Technical
-                      </span>
+                   
                     </div>
 
                     <div className="mb-4">
@@ -249,9 +247,7 @@ const Report = () => {
                   <div key={index} className="border border-white/10 bg-white/5 rounded-xl p-5 transition-all hover:border-white/20">
                     <div className="flex justify-between items-start mb-3">
                       <h3 className="text-lg font-medium text-white">{item.question}</h3>
-                      <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-yellow-900/30 text-yellow-300 border border-yellow-800/50">
-                        Behavioral
-                      </span>
+                    
                     </div>
 
                     <div className="mb-4">
