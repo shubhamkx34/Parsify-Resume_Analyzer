@@ -239,7 +239,7 @@ Return a JSON object with a single key "html" containing the raw HTML string. Do
 
   try {
     const response = await genAI.models.generateContent({
-      model: "gemini-3.5-flash-lite",
+      model: "gemini-3.6-flash",
       contents: prompt,
       config: {
         systemInstruction: "You are an expert frontend developer. You must strictly output valid JSON.",
